@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App</title>
+    <link rel="stylesheet" href="./css/open-props.min.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="./scripts/alpine.min.js"></script>
+    <script src="./scripts/theme.js"></script>
+    <script src="./scripts/todos.js"></script>
+    <script src="./scripts/app.js"></script>
+  </head>
+  <body x-data="themeManager()" x-init="initTheme()">
+    <div class="todo" x-data="todoApp()">
+      <header class="todo__header">
+        <h1 class="todo__title">TODO</h1>
+        <button class="todo__theme-toggle" @click="toggleTheme">
+          <img
+            :src="theme === 'light' ? './assets/images/icon-moon.svg' : './assets/images/icon-sun.svg'"
+            alt="Toggle Theme"
+          />
+        </button>
+      </header>
+
+      <div class="todo__input">
+        <label class="todo__checkbox">
+          <input
+            type="checkbox"
+            x-ref="master"
+            :checked="allCompleted"
+            @change="toggleAll"
+            x-effect="$refs.master.indeterminate = todos.some(t => t.completed) && !allCompleted"
+          />
+          <span class="todo__checkmark"></span>
+        </label>
+        <input
+          type="text"
+          placeholder="Create a new todo..."
+          class="todo__input-field"
+          x-model="newTodo"
+          @keydown.enter="addTodo"
+        />
+      </div>
+
+      <div class="todo__list">
+        <template x-for="(todo, index) in filteredTodos" :key="todo.id">
+          <div
+            class="todo__item"
+            :class="{
+             'todo__item--completed': todo.completed,
+             'todo__item--drag-over': dragOverIndex === index
+           }"
+            draggable="true"
+            @dragstart="dragStart(index)"
+            @dragover.prevent="dragOver(index)"
+            @dragleave="dragLeave"
+            @drop="drop(index)"
+            @dragend="dragEnd"
+          >
+            <label class="todo__checkbox">
+              <input type="checkbox" x-model="todo.completed" />
+              <span class="todo__checkmark"></span>
+            </label>
+
+            <span class="todo__text" x-text="todo.text"></span>
+
+            <button class="todo__delete" @click="removeTodo(index)">
+              <img src="./assets/images/icon-cross.svg" alt="" />
+            </button>
+          </div>
+        </template>
+        <div class="todo__footer">
+          <span class="todo__count" x-text="remaining + ' items left'"></span>
+          <div class="todo__filters filters--desktop">
+            <button
+              class="todo__filter"
+              :class="{'todo__filter--active': filter==='all'}"
+              @click="filter='all'"
+            >
+              All
+            </button>
+            <button
+              class="todo__filter"
+              :class="{'todo__filter--active': filter==='active'}"
+              @click="filter='active'"
+            >
+              Active
+            </button>
+            <button
+              class="todo__filter"
+              :class="{'todo__filter--active': filter==='completed'}"
+              @click="filter='completed'"
+            >
+              Completed
+            </button>
+          </div>
+          <button class="todo__clear" @click="clearCompleted">
+            Clear Completed
+          </button>
+        </div>
+      </div>
+
+      <div class="todo__filters filters--mobile">
+        <button
+          class="todo__filter"
+          :class="{'todo__filter--active': filter==='all'}"
+          @click="filter='all'"
+        >
+          All
+        </button>
+        <button
+          class="todo__filter"
+          :class="{'todo__filter--active': filter==='active'}"
+          @click="filter='active'"
+        >
+          Active
+        </button>
+        <button
+          class="todo__filter"
+          :class="{'todo__filter--active': filter==='completed'}"
+          @click="filter='completed'"
+        >
+          Completed
+        </button>
+      </div>
+
+      <p class="todo__hint">Drag and drop to reorder list</p>
+    </div>
+  </body>
+</html>
