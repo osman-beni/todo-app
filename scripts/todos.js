@@ -54,30 +54,33 @@ function todoApp() {
       this.newTodo = "";
     },
 
-    removeTodo(index) {
-      this.todos.splice(index, 1);
+    removeTodo(id) {
+      this.todos = this.todos.filter((t) => t.id !== id);
     },
 
     clearCompleted() {
       this.todos = this.todos.filter((t) => !t.completed);
     },
 
-    dragStart(index) {
-      this.dragIndex = index;
+    dragStart(id) {
+      this.dragIndex = this.todos.findIndex((t) => t.id === id);
     },
 
-    dragOver(index) {
-      this.dragOverIndex = index;
+    dragOver(id) {
+      this.dragOverIndex = id;
     },
 
     dragLeave() {
       this.dragOverIndex = null;
     },
 
-    drop(dropIndex) {
+    drop(id) {
+      const dropIndex = this.todos.findIndex((t) => t.id === id);
       if (this.dragIndex === null || this.dragIndex === dropIndex) return;
+
       const draggedItem = this.todos.splice(this.dragIndex, 1)[0];
       this.todos.splice(dropIndex, 0, draggedItem);
+
       this.dragIndex = null;
       this.dragOverIndex = null;
     },
@@ -88,6 +91,3 @@ function todoApp() {
     },
   };
 }
-document.addEventListener("alpine:init", () => {
-  Alpine.data("todoApp", todoApp);
-});

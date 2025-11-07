@@ -6,7 +6,7 @@
     <title>Todo App</title>
     <link rel="stylesheet" href="./css/open-props.min.css" />
     <link rel="stylesheet" href="./css/styles.css" />
-    <script src="./scripts/alpine.min.js"></script>
+    <script src="./scripts/alpine.min.js" defer></script>
     <script src="./scripts/theme.js"></script>
     <script src="./scripts/todos.js"></script>
     <script src="./scripts/app.js"></script>
@@ -44,18 +44,18 @@
       </div>
 
       <div class="todo__list">
-        <template x-for="(todo, index) in filteredTodos" :key="todo.id">
+        <template x-for="todo in filteredTodos" :key="todo.id">
           <div
             class="todo__item"
             :class="{
              'todo__item--completed': todo.completed,
-             'todo__item--drag-over': dragOverIndex === index
+             'todo__item--drag-over': dragOverIndex === todo.id
            }"
             draggable="true"
-            @dragstart="dragStart(index)"
-            @dragover.prevent="dragOver(index)"
+            @dragstart="dragStart(todo.id)"
+            @dragover.prevent="dragOver(todo.id)"
             @dragleave="dragLeave"
-            @drop="drop(index)"
+            @drop="drop(todo.id)"
             @dragend="dragEnd"
           >
             <label class="todo__checkbox">
@@ -65,7 +65,7 @@
 
             <span class="todo__text" x-text="todo.text"></span>
 
-            <button class="todo__delete" @click="removeTodo(index)">
+            <button class="todo__delete" @click="removeTodo(todo.id)">
               <img src="./assets/images/icon-cross.svg" alt="" />
             </button>
           </div>
