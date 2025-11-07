@@ -76,11 +76,19 @@ function todoApp() {
 
     drop(id) {
       const dropIndex = this.todos.findIndex((t) => t.id === id);
-      if (this.dragIndex === null || this.dragIndex === dropIndex) return;
+      if (
+        this.dragIndex === null ||
+        dropIndex === -1 ||
+        this.dragIndex === dropIndex
+      )
+        return;
 
       const draggedItem = this.todos.splice(this.dragIndex, 1)[0];
+      if (!draggedItem) return;
+
       this.todos.splice(dropIndex, 0, draggedItem);
 
+      // reset drag state
       this.dragIndex = null;
       this.dragOverIndex = null;
     },
