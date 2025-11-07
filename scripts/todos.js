@@ -45,7 +45,10 @@ function todoApp() {
     },
 
     addTodo() {
-      if (!this.newTodo.trim()) return;
+      if (!this.newTodo.trim()) {
+        alert("Enter a Todo...");
+        return;
+      }
       this.todos.push({
         id: Date.now(),
         text: this.newTodo,
