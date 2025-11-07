@@ -34,15 +34,16 @@
           />
           <span class="todo__checkmark"></span>
         </label>
-        <input
-          type="text"
-          placeholder="Create a new todo..."
-          class="todo__input-field"
-          x-model="newTodo"
-          @keydown.enter="addTodo"
-          inputmode="text"
-          :enterkeyhint="newTodo.trim() ? 'send' : 'return'"
-        />
+        <form @submit.prevent="addTodo" class="todo__input-form">
+          <input
+            type="text"
+            placeholder="Create a new todo..."
+            class="todo__input-field"
+            x-model="newTodo"
+            inputmode="text"
+            :enterkeyhint="newTodo.trim() ? 'send' : 'return'"
+          />
+        </form>
       </div>
 
       <div class="todo__list">
