@@ -40,6 +40,8 @@
           class="todo__input-field"
           x-model="newTodo"
           @keydown.enter="addTodo"
+          inputmode="text"
+          :enterkeyhint="newTodo.trim() ? 'send' : 'return'"
         />
       </div>
 
