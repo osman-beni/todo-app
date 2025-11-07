@@ -45,34 +45,30 @@
           />
         </form>
       </div>
-
+      <div class="todo__filters filters--mobile">
+        <button
+          class="todo__filter"
+          :class="{'todo__filter--active': filter==='all'}"
+          @click="filter='all'"
+        >
+          All
+        </button>
+        <button
+          class="todo__filter"
+          :class="{'todo__filter--active': filter==='active'}"
+          @click="filter='active'"
+        >
+          Active
+        </button>
+        <button
+          class="todo__filter"
+          :class="{'todo__filter--active': filter==='completed'}"
+          @click="filter='completed'"
+        >
+          Completed
+        </button>
+      </div>
       <div class="todo__list">
-        <template x-for="todo in filteredTodos" :key="todo.id">
-          <div
-            class="todo__item"
-            :class="{
-             'todo__item--completed': todo.completed,
-             'todo__item--drag-over': dragOverIndex === todo.id
-           }"
-            draggable="true"
-            @dragstart="dragStart(todo.id)"
-            @dragover.prevent="dragOver(todo.id)"
-            @dragleave="dragLeave"
-            @drop="drop(todo.id)"
-            @dragend="dragEnd"
-          >
-            <label class="todo__checkbox">
-              <input type="checkbox" x-model="todo.completed" />
-              <span class="todo__checkmark"></span>
-            </label>
-
-            <span class="todo__text" x-text="todo.text"></span>
-
-            <button class="todo__delete" @click="removeTodo(todo.id)">
-              <img src="./assets/images/icon-cross.svg" alt="" />
-            </button>
-          </div>
-        </template>
         <div class="todo__footer">
           <span class="todo__count" x-text="remaining + ' items left'"></span>
           <div class="todo__filters filters--desktop">
@@ -102,30 +98,32 @@
             Clear Completed
           </button>
         </div>
-      </div>
+        <template x-for="todo in filteredTodos" :key="todo.id">
+          <div
+            class="todo__item"
+            :class="{
+             'todo__item--completed': todo.completed,
+             'todo__item--drag-over': dragOverIndex === todo.id
+           }"
+            draggable="true"
+            @dragstart="dragStart(todo.id)"
+            @dragover.prevent="dragOver(todo.id)"
+            @dragleave="dragLeave"
+            @drop="drop(todo.id)"
+            @dragend="dragEnd"
+          >
+            <label class="todo__checkbox">
+              <input type="checkbox" x-model="todo.completed" />
+              <span class="todo__checkmark"></span>
+            </label>
 
-      <div class="todo__filters filters--mobile">
-        <button
-          class="todo__filter"
-          :class="{'todo__filter--active': filter==='all'}"
-          @click="filter='all'"
-        >
-          All
-        </button>
-        <button
-          class="todo__filter"
-          :class="{'todo__filter--active': filter==='active'}"
-          @click="filter='active'"
-        >
-          Active
-        </button>
-        <button
-          class="todo__filter"
-          :class="{'todo__filter--active': filter==='completed'}"
-          @click="filter='completed'"
-        >
-          Completed
-        </button>
+            <span class="todo__text" x-text="todo.text"></span>
+
+            <button class="todo__delete" @click="removeTodo(todo.id)">
+              <img src="./assets/images/icon-cross.svg" alt="" />
+            </button>
+          </div>
+        </template>
       </div>
 
       <p class="todo__hint">Drag and drop to reorder list</p>
